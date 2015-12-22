@@ -1,0 +1,28 @@
+#mapSection {
+    width: 80vw;
+    height: 95vh;
+}
+
+#infoSection ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.markerListItem {
+    list-style: none;
+    text-align:center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.selector {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.markerListItem:hover {
+    background-color: #3298ff;
+    color: white;
+}

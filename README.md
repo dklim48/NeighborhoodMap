@@ -1,0 +1,1 @@
+To launch the application run index on any server.

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeighborHood Map</title>
+    <link rel="stylesheet" type="text/css" href="components/flexboxgrid-6.3.0/css/flexboxgrid.min.css">
+    <link rel="stylesheet" type="text/css" href="css/map.css">
+</head>
+<body>
+    <div class="row center-xs">
+        <div id="infoSection" class="col-xs-2">
+            <div class="selector">
+                Filter: <input type="text" data-bind="textInput: filter" />
+            </div>
+            <ul data-bind="foreach: filteredMarkers()">
+                <li class="markerListItem" data-bind="click: toggleBounce, text: title"></li>
+            </ul>
+        </div>
+        <div class="col-xs-10">
+            <div id="mapSection">
+            </div>
+        </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="components/knockout/knockout_3_4.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
