@@ -97,26 +97,29 @@ var ViewModel = function() {
     this.markerList = ko.observableArray([]);
     this.filter = ko.observable("");
 
-    // Create a map object and specify the DOM element for display. This will never be built again.
-    map = new google.maps.Map(document.getElementById('mapSection'), {
-        center: {lat: 37.3860517, lng: -122.0838511},
-        zoom: 13
-    });
-
-    //For each address above, I find the lattitude and longitude using Google Maps geocoding service. I then use this
-    //to place all of the markers on the map. If I fail, I report out to the console that no information was available.
-    markersBase.forEach(function(marker){
-        $.ajax({
-            url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + marker.address + "&key=AIzaSyCDY4bflcDepro-0WJwG3oI-EKWd3EQgZI",
-            dataType: "json"
-        }).done(function (data){
-            var lat = data.results[0].geometry.location.lat;
-            var long = data.results[0].geometry.location.lng;
-            self.markerList.push(new Marker(marker.title, long, lat));
-        }).fail(function (){
-            console.log("Call using location info: [" + marker.address + "] has failed to find an address.")
+    this.init = function(){
+        // Create a map object and specify the DOM element for display. This will never be built again.
+        map = new google.maps.Map(document.getElementById('mapSection'), {
+            center: {lat: 37.3860517, lng: -122.0838511},
+            zoom: 13
         });
-    });
+
+        //For each address above, I find the lattitude and longitude using Google Maps geocoding service. I then use this
+        //to place all of the markers on the map. If I fail, I report out to the console that no information was available.
+        markersBase.forEach(function(marker){
+            $.ajax({
+                url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + marker.address + "&key=AIzaSyCDY4bflcDepro-0WJwG3oI-EKWd3EQgZI",
+                dataType: "json"
+            }).done(function (data){
+                var lat = data.results[0].geometry.location.lat;
+                var long = data.results[0].geometry.location.lng;
+                self.markerList.push(new Marker(marker.title, long, lat));
+            }).fail(function (){
+                console.log("Call using location info: [" + marker.address + "] has failed to find an address.")
+            });
+        });
+    }
+
 
     //I bound this change to act on the base list, and return only the values that successfully pass the filter. I then
     //toggle the visible state of the Marker based on that information.
@@ -145,3 +148,4 @@ var ViewModel = function() {
 
 var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
+//viewModel.init();
