@@ -38,6 +38,8 @@ var Marker = function(title, longitude, lattitude){
     var infoWindow = new google.maps.InfoWindow({
         content: "None"
     });
+
+    this.info = infoWindow;
     //For each marker I call out to wikipedia to get some information. If there is no information that comes back, I
     //fail gracefully and add that no information was found.
     $.ajax({
@@ -68,6 +70,7 @@ var Marker = function(title, longitude, lattitude){
             mark.setAnimation(null);
             infoWindow.close();
         } else {
+            viewModel.clearMarkers();
             mark.setAnimation(google.maps.Animation.BOUNCE);
             infoWindow.open(map, mark);
         }
@@ -119,7 +122,7 @@ var ViewModel = function() {
     //toggle the visible state of the Marker based on that information.
     this.filteredMarkers = ko.computed(function () {
         return ko.utils.arrayFilter(self.markerList(), function (marker) {
-            if(!self.filter() || marker.title().indexOf(self.filter()) > -1){
+            if(!self.filter() || marker.title().toLowerCase().indexOf(self.filter().toLowerCase()) > -1){
                 marker.visible(true);
                 return true;
             } else {
@@ -128,6 +131,17 @@ var ViewModel = function() {
             }
         });
     });
+
+    this.clearMarkers = function(){
+        for(var i = 0; i < self.markerList().length; i++){
+            var mark = self.markerList()[i];
+            if (mark.marker.getAnimation() !== null){
+                mark.marker.setAnimation(null);
+                mark.info.close();
+            }
+        }
+    }
 };
 
-ko.applyBindings(new ViewModel());
+var viewModel = new ViewModel();
+ko.applyBindings(viewModel);
